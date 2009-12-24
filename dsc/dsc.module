@@ -1,0 +1,98 @@
+<?php
+/**
+ * Implementation hook_autoload_info().
+ */
+function dsc_autoload_info() {
+	return array(
+    'DscCommonHooks' => array('file' => 'includes/DscCommonHooks.inc'),
+		'SoundCloudTrack' => array('file' => 'includes/DscData.inc'),
+		'SoundCloudUser' => array('file' => 'includes/DscData.inc'),
+  );
+}
+
+/**
+ * Implementation of hook_enable().
+ */
+function dsc_enable() {
+  // Flush the autoload caches so that our classes are registered
+  autoload_flush_caches();
+}
+
+/**
+ * Implementation of hook_menu()
+ */
+function dsc_menu() {
+	return DscCommonHooks::menu();
+}
+
+/**
+ * Implementation of hook_user().
+ */
+function dsc_user($op, &$edit, &$account, $category = NULL) {
+	return DscCommonHooks::user($op, &$edit, &$account, $category);
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function dsc_theme() {
+	return DscCommonHooks::theme();
+}
+
+/**
+ * Implementation of hook_views_api.
+ */
+function dsc_views_api() {
+  return array('api' => 2);
+}
+
+/**
+ * Always returns TRUE.
+ */
+function _dsc_always_true() {
+	return TRUE;
+}
+
+function theme_list_tracks($tracks, $load_player) {
+	if (!empty($tracks)) {
+		if (module_exists('dsc_player') && $load_player) dsc_player_load_player();
+		
+		foreach ($tracks as $track) {
+			$permalinks[] = array(
+				l($track->permalink_url, $track->permalink_url, array('attributes' => array('class' => 'track'))),
+			);
+		}
+		
+		$output .= '<div class="sc-player">';
+		$output .= theme('item_list', $permalinks, NULL, 'ul', array('class' => 'playlist'));
+		$output .= '</div>';
+		
+		return $output;
+	} else return t("There are no tracks to display.");
+}
+
+/**
+ * Theme function for dsc_player views style plugin.
+ */
+function theme_views_view_dsc_player($view, $options, $rows, $title) {
+	$tracks = array();
+	
+	foreach ($rows as $num => $row) {
+		$track = new stdClass;
+		$track->permalink_url = $row->dsc_tracks_permalink_url;
+		$tracks[] = $track;
+	}
+	
+	$output = theme('list_tracks', $tracks, FALSE);
+	return $output;
+}
+
+/**
+ * TOM's Temporary Debugging Function
+ */
+function _p($var, $label = NULL) {
+	if ($label) {
+		error_log(print_r('DEBUG: '. $label .'=>', 1), 0);
+	}
+	error_log(print_r($var, 1), 0);
+}

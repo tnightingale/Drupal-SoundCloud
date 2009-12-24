@@ -1,0 +1,151 @@
+<?php
+
+/**
+ * Implementation of hook_schema().
+ */
+function dsc_schema() {
+	$schema['dsc_user'] = array(
+    'fields' => array(
+      'uid' => array(
+        'description' => t("The Drupal ID of the user account associated with the SoundCloud account."),
+        'type' => 'int',
+        'not null' => TRUE
+      ),
+			'permalink' => array(
+        'description' => t("The unique machine name for the SoundCloud account."),
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+			'sc_user_id' => array(
+				'description' => t("The SoundCloud account's unique ID"),
+				'type' => 'int',
+				'not null' => TRUE,
+			),
+      'sc_user_username' => array(
+        'description' => t("The unique username for the SoundCloud account."),
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+			'import' => array(
+        'description' => t("Boolean flag indicating whether the {dsc_user}'s tracks should be pulled in by the site."),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 1
+      ),
+    ),
+    'primary key' => array('uid', 'permalink'),
+    'indexes' => array('permalink' => array('permalink'), 'uid' => array('uid'),),
+  );
+	
+	$schema['dsc_tracks'] = array(
+		'fields' => array(
+			'tid' => array(
+				'description' => t("The track's unique id given by SoundCloud"),
+				'type' => 'int',
+				'not null' => TRUE,
+			),
+			'sc_user_id' => array(
+				'description' => t("This tracks owner's account's unique ID"),
+				'type' => 'int',
+				'not null' => TRUE,
+			),
+			'permalink' => array(
+				'description' => t("The unique machine name for this SoundCloud track."),
+				'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+			),
+			'uri' => array(
+				'description' => t('The SoundCloud uri for this track.'),
+				'type' => 'varchar',
+				'length' => '255',
+				'not null' => TRUE,
+			),
+			"waveform_url" => array(
+				'description' => t('A Url pointing to a waveform image of this track.'),
+				'type' => 'varchar',
+				'length' => '255',
+				'not null' => TRUE,
+			),
+			"permalink_url" => array(
+				'description' => t("The track's SoundCloud URL (permalink)."),
+				'type' => 'varchar',
+				'length' => '255',
+				'not null' => TRUE,
+			),
+			'title' => array(
+				'description' => t("The track's title."),
+				'type' => 'varchar',
+				'length' => 255,
+				'not null' => TRUE,
+				'default' => '',
+			),
+			'description' => array(
+				'description' => t('A brief description of the track.'),
+				'type' => 'text',
+			),
+			'downloadable' => array(
+				'description' => t('Whether this track is downloadable or not (Boolean).'),
+				'type' => 'int',
+				'unsigned' => TRUE,
+				'not null' => TRUE,
+				'default' => 0,
+			),
+			'genre' => array(
+				'description' => t('This track\'s genre.'),
+				'type' => 'varchar',
+				'length' => 255,
+			),
+			'sharing' => array(
+				'description' => t('NOT SURE'),
+				'type' => 'varchar',
+				'length' => 255,
+			),
+			'streamable' => array(
+				'description' => t('Whether this track is streamable or not (Boolean).'),
+				'type' => 'int',
+				'unsigned' => TRUE,
+				'not null' => TRUE,
+				'default' => 0,
+			),
+			'license' => array(
+				'description' => t('The license this track is released under.'),
+				'type' => 'varchar',
+				'length' => 255,
+			),
+			'visible' => array(
+				'description' => t('Whether this track is visible or not (Boolean).'),
+				'type' => 'int',
+				'unsigned' => TRUE,
+				'not null' => TRUE,
+				'default' => 0,
+			),
+		),
+		'primary key' => array('tid'),
+		'indexes' => array('tid' => array('tid'), 'sc_user_id' => array('sc_user_id'),),
+	);
+
+  return $schema;
+}
+
+/**
+ * Implementation of hook_install().
+ */
+function dsc_install() {
+  // Create tables.
+  drupal_install_schema('dsc');
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function dsc_uninstall() {
+  // Remove tables.
+  drupal_uninstall_schema('dsc');
+}

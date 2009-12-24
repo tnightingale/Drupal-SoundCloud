@@ -1,0 +1,80 @@
+.play {
+	background-image: url(images/play.png);
+}
+.play:hover {
+	background-position: 0px 50px;
+}
+.pause {
+	background-image: url(images/pause.png);
+}
+.pause:hover {
+	background-position: 0px 50px;
+}
+.stop {
+	background-image: url(images/stop.png);
+}
+.stop:hover {
+	background-position: 0px 50px;
+}
+.next {
+	background-image: url(images/next.png);
+}
+.next:hover {
+	background-position: 0px 50px;
+}
+.previous {
+	background-image: url(images/previous.png);
+}
+.previous:hover {
+	background-position: 0px 50px;
+}
+
+.button {
+	width: 50px;
+	height: 50px;
+	display: block;
+	float: left;
+	margin: 1px 10px;
+}
+
+.playlist {
+	clear: both;
+}
+.playlist li {
+	background: none;
+}
+
+.display {
+	position: relative;
+	top: -3em;
+}
+
+.overall {
+	margin-left: 280px;
+}
+
+.track-meta {
+	float: left;
+	max-width: 370px;
+}
+.title {
+	overflow: hidden;
+}
+.track-time {
+	float: right;
+}
+.track-meta,
+.track-time {
+	margin: 5px 5px;
+	font-size: 1.5em;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+
+.playing a {
+	border-bottom: #2588C4 solid 1px;
+}
+.paused a {
+	border-bottom: #2588C4 dotted 1px;
+}
+

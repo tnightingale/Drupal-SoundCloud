@@ -1,0 +1,6 @@
+; $Id:
+name = Drupal SoundCloud
+description = Provides interaction with the SoundCloud webservices.
+core = 6.x
+dependencies[] = autoload
+dependencies[] = soundmanager2
