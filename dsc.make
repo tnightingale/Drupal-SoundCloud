@@ -9,6 +9,7 @@ projects[rubik][location] = http://code.developmentseed.org/fserver
 
 projects[] = blueprint
 projects[] = autoload
+# This patch prevents autoload from breaking Drush
 projects[autoload][patch][] = "http://drupal.org/files/issues/autoload-547736_0.patch" 
 projects[] = views
 projects[] = advanced_help
