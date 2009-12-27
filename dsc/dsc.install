@@ -143,6 +143,16 @@ function dsc_schema() {
  * Implementation of hook_install().
  */
 function dsc_install() {
+	
+	// Ensuring autoload is enabled 1st.
+	if (!module_exists('autoload')) {
+		_p('installing autoload');
+		include_once('includes/install.inc');
+		drupal_install_modules(array('autoload'));
+	}
+
+	autoload_flush_caches();
+	
   // Create tables.
   drupal_install_schema('dsc');
 }
