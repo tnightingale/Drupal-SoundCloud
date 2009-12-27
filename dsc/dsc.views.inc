@@ -95,37 +95,18 @@ function dsc_views_data() {
 /**
  * Implementation of hook_views_plugins().
  */
-function dsc_views_plugins() {
-  $path = drupal_get_path('module', 'dsc');
-  $views_path = drupal_get_path('module', 'views');
-  //require_once "./$path/theme/theme.inc";
-  
+function dsc_views_plugins() {  
   $plugins = array(
     'module' => 'dsc',
     'style' => array(
-      /*'parent' => array(
-        // this isn't really a display but is necessary so the file can
-        // be included.
-        'no ui' => TRUE,
-        'handler' => 'views_plugin_style',
-        'path' => "$views_path/plugins",
-        'parent' => '',
-      ),*/
       'dsc_player' => array(
         'title' => t('SoundCloud Player'),
         'help' => t('Renders a list of SoundCloud tracks in a single player.'),
         'handler' => 'dsc_player_plugin_style',
-        //'path' => $path,
-        //'parent' => 'parent',
         'theme' => 'views_view_dsc_player',
-        //'theme file' => 'theme.inc',
-        //'theme path' => "$path/theme",
-        //'uses row plugin' => FALSE,
         'uses fields' => TRUE,
         'uses options' => TRUE,
-        //'base' => array('node'), // only works with 'node' as base.
         'type' => 'normal',
-        //'even empty' => TRUE,
       ),
     ),
   );

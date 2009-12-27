@@ -6,12 +6,8 @@
  */
 
 /**
- * Temporary page callback for testing.
+ * User account's Music tab.
  */
-function _dsc_page() {
-  return 'hello';
-}
-
 function user_music($account) {
   drupal_set_title(check_plain($account->name) . "'s Music");
   
