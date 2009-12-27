@@ -11,32 +11,32 @@ function dsc_player_init() {
  * Implementation of hook_menu().
  */
 function dsc_player_menu() {
-	$menu = array();
-	
-	// Ajax callback.
-	$menu['dsc_player/track_toggle_visible'] = array(
-		'page callback' => 'dsc_player_track_toggle_visible',
-		'access callback' => _dsc_always_true(),
-		'type' => MENU_CALLBACK,
-	);
-	
-	return $menu;
+  $menu = array();
+  
+  // Ajax callback.
+  $menu['dsc_player/track_toggle_visible'] = array(
+    'page callback' => 'dsc_player_track_toggle_visible',
+    'access callback' => _dsc_always_true(),
+    'type' => MENU_CALLBACK,
+  );
+  
+  return $menu;
 }
 
 /**
  * Utility function - Loads Sound Cloud player JS.
  */
 function dsc_player_load_player() {
-	// Set common paths.
-	$module_path = drupal_get_path('module', 'dsc_player');
-	
-	// Default styling;
-	drupal_add_css($module_path . "/theme/dsc-player-style.css");
-	
-	// Loading the scplayer plugin.
-	drupal_add_js($module_path . "/scripts/" . "scplayer.js", 'module');
-	// Finally load our initilization code.
-	drupal_add_js($module_path . "/scripts/" . "scplayer_init.js");
+  // Set common paths.
+  $module_path = drupal_get_path('module', 'dsc_player');
+  
+  // Default styling;
+  drupal_add_css($module_path . "/theme/dsc-player-style.css");
+  
+  // Loading the scplayer plugin.
+  drupal_add_js($module_path . "/scripts/" . "scplayer.js", 'module');
+  // Finally load our initilization code.
+  drupal_add_js($module_path . "/scripts/" . "scplayer_init.js");
 }
 
 /**
@@ -44,16 +44,16 @@ function dsc_player_load_player() {
  */
 /*
 function dsc_player_track_toggle_visible($tid) {
-	
-	$track = SoundCloudTrack::getTrack($tid);
-	$track->toggleVisibility();
-	
-	$data = array(
-		'tid' => $track->tid,
-		'visible' => $track->visible,
-		'callback' => 'toggleVis',
-	);
-	
-	drupal_json($data);
+  
+  $track = SoundCloudTrack::getTrack($tid);
+  $track->toggleVisibility();
+  
+  $data = array(
+    'tid' => $track->tid,
+    'visible' => $track->visible,
+    'callback' => 'toggleVis',
+  );
+  
+  drupal_json($data);
 }
 */
