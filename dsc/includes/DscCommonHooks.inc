@@ -15,18 +15,11 @@ class DscCommonHooks {
   public static function menu() {
     $menu = array();
     
-    $menu['dsc'] = array(
-      'page callback' => '_dsc_page',
-      'access callback' => '_dsc_always_true',
-      'file' => 'dsc.pages.inc',
-      'type' => MENU_CALLBACK,
-    );
-    
     $menu['user/%user_category/edit/dsc_account'] = array(
       'title' => t('SoundCloud Account'),
       'page callback' => 'drupal_get_form',
       'page arguments' => array('dsc_user_settings_form', 1),
-      'access callback' => _dsc_always_true(),
+      'access' => 'administer DrupalSoundCloud',
       'type' => MENU_LOCAL_TASK,
       'load arguments' => array('%map', '%index'),
       'file' => 'dsc.pages.inc',
@@ -36,7 +29,7 @@ class DscCommonHooks {
       'title' => t('Music'),
       'page callback' => 'user_music',
       'page arguments' => array(1),
-      'access callback' => _dsc_always_true(),
+      'access' => 'access user profiles',
       'type' => MENU_LOCAL_TASK,
       'file' => 'dsc.pages.inc',
     );

@@ -25,6 +25,13 @@ function dsc_enable() {
 }
 
 /**
+ * Implementation of hook_perm().
+ */
+function dsc_perm() {
+  return array('administer DrupalSoundCloud');
+}
+
+/**
  * Implementation of hook_menu()
  */
 function dsc_menu() {
