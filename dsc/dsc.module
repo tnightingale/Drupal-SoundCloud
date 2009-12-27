@@ -14,6 +14,12 @@ function dsc_autoload_info() {
  * Implementation of hook_enable().
  */
 function dsc_enable() {
+  // Calling autoload's hook_init() here. This is dirty but the only way I can
+  // find to prevent WSOD when installing DSC and it's dependency Autoload at
+  // the same time.
+  // Issue is documented here: http://drupal.org/node/359147.
+  autoload_init();
+  
   // Flush the autoload caches so that our classes are registered
   autoload_flush_caches();
 }
@@ -88,14 +94,4 @@ function theme_views_view_dsc_player($view, $options, $rows, $title) {
   
   $output = theme('list_tracks', $tracks, FALSE);
   return $output;
-}
-
-/**
- * TOM's Temporary Debugging Function
- */
-function _p($var, $label = NULL) {
-  if ($label) {
-    error_log(print_r('DEBUG: '. $label .'=>', 1), 0);
-  }
-  error_log(print_r($var, 1), 0);
 }
