@@ -15,6 +15,11 @@ projects[] = views
 projects[] = advanced_help
 projects[] = soundmanager2
 
+libraries[dsc][download][type] = "git" 
+libraries[dsc][download][url] = "git://github.com/thegreat/Drupal-SoundCloud.git"
+libraries[dsc][directory_name] = dsc
+libraries[dsc][destination] = modules
+
 libraries[soundmanager][download][type] = "get"
 libraries[soundmanager][download][url] = "http://www.schillmania.com/projects/soundmanager2/download/soundmanagerv295a-20090717.zip"
 libraries[soundmanager][directory_name] = soundmanagerv2
