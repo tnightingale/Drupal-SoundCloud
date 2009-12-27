@@ -22,8 +22,8 @@ class DscCommonHooks {
       'type' => MENU_CALLBACK,
     );
     
-    $menu['user/%user_category/edit/music'] = array(
-      'title' => t('Music Storage'),
+    $menu['user/%user_category/edit/dsc_account'] = array(
+      'title' => t('SoundCloud Account'),
       'page callback' => 'drupal_get_form',
       'page arguments' => array('dsc_user_settings_form', 1),
       'access callback' => _dsc_always_true(),
@@ -52,8 +52,8 @@ class DscCommonHooks {
       case 'categories':
         return array(
           array(
-            'name' => 'music',
-            'title' => 'Music Storage',
+            'name' => 'dsc_account',
+            'title' => t('SoundCloud Account'),
           ),
         );
         break;
