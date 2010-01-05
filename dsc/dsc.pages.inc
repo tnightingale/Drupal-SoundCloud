@@ -17,7 +17,7 @@ function dsc_user_music($account) {
     return theme('dsc_list_tracks', $tracks, TRUE);
   }
   else {
-    drupal_set_message(t("You need to set a SoundCloud account. You can do that <a href=\"@user_music\">here</a>", array('@user_music' => url("user/{$account->uid}/edit/music"))), 'error');
+    drupal_set_message(t("You need to set a SoundCloud account. You can do that <a href=\"@user_music\">here</a>", array('@user_music' => url("user/{$account->uid}/edit/dsc_account"))), 'error');
     return t('No Music.');
   }
   

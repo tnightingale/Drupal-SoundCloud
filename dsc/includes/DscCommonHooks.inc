@@ -19,7 +19,7 @@ class DscCommonHooks {
       'title' => t('SoundCloud Account'),
       'page callback' => 'drupal_get_form',
       'page arguments' => array('dsc_user_settings_form', 1),
-      'access' => 'administer DrupalSoundCloud',
+      'access arguments' => array('administer DrupalSoundCloud'),
       'type' => MENU_LOCAL_TASK,
       'load arguments' => array('%map', '%index'),
       'file' => 'dsc.pages.inc',
@@ -29,7 +29,7 @@ class DscCommonHooks {
       'title' => t('Music'),
       'page callback' => 'dsc_user_music',
       'page arguments' => array(1),
-      'access' => 'access user profiles',
+      'access arguments' => array('access user profiles'),
       'type' => MENU_LOCAL_TASK,
       'file' => 'dsc.pages.inc',
     );
