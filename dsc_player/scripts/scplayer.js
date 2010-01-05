@@ -31,7 +31,9 @@
 				
 				// Function: loadTrack(trackNumber)
 				this.loadTrack = function (trackNumber) {
-					if (state != 'stopped') this.stop();
+					if (state != 'stopped') {
+            this.stop();
+					}
 					var track = playlist.getTrack(trackNumber);
 					var options = getSoundOptions(track);
 					loadedTrack = soundManager.createSound(options);
@@ -52,7 +54,9 @@
 				
 				// Function: togglePlay(trackNumber)
 				this.togglePlay = function (trackNumber) {
-					if (trackNumber == null) trackNumber = current;
+					if (trackNumber == null) {
+            trackNumber = current;
+					}
 					switch (state) {
 						case 'playing':
 							player.pause();
@@ -210,7 +214,9 @@
 						});
 						
 						function toggle(state) {
-							if (!state) state = player.state;
+							if (!state) {
+                state = player.state;
+							}
 							switch(state) {
 								case 'playing':
 									button_play.hide();
@@ -258,7 +264,9 @@
 					}
 					
 					function Button(text, classname) {
-						if (!classname) classname = text;
+						if (!classname) {
+              classname = text;
+						}
 						
 						var button = Drupal.theme('dsc_player_buttons_button', text, classname); //$('<a>').attr('href', '#').text(text).addClass(classname);
 						
@@ -368,8 +376,12 @@
 					});
 					
 					function getTracks(trackNumber) {
-						if (trackNumber == null) return tracks;
-						else return tracks[trackNumber];
+						if (trackNumber == null) {
+              return tracks;
+						}
+						else {
+              return tracks[trackNumber];
+						}
 					}
 					
 					function length() {

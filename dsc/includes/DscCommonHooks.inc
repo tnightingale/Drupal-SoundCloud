@@ -27,7 +27,7 @@ class DscCommonHooks {
     
     $menu['user/%user/music'] = array(
       'title' => t('Music'),
-      'page callback' => 'user_music',
+      'page callback' => 'dsc_user_music',
       'page arguments' => array(1),
       'access' => 'access user profiles',
       'type' => MENU_LOCAL_TASK,
@@ -55,7 +55,7 @@ class DscCommonHooks {
   
   public static function theme() {
     return array(
-      'list_tracks' => array(
+      'dsc_list_tracks' => array(
         'arguments' => array('tracks', 'load_player'),
       ),
     );

@@ -30,15 +30,23 @@ abstract class SoundCloudData {
     return $this;
   }
   
-  static function _newFromObj($class, $obj, $uid, $import = TRUE) {
+  static function newFromObj($class, $obj, $uid, $import = TRUE) {
     
-    if (is_null($uid)) return FALSE;
+    if (is_null($uid)) {
+      return FALSE;
+    }
     
-    if (is_array($obj)) $obj = (object)$obj;
-    elseif (!is_object($obj)) return FALSE;
+    if (is_array($obj)) {
+      $obj = (object)$obj;
+    }
+    elseif (!is_object($obj)) {
+      return FALSE;
+    }
     
     $new = new $class($uid, $obj);
-    if ($import) $new->save();
+    if ($import) {
+      $new->save();
+    }
     
     return $new;
   }
@@ -53,11 +61,15 @@ abstract class SoundCloudData {
    * @return Mixed - Ether returns an array containing requested data or FALSE if no data returned.
    */
   static function request($request, $uid, $import = TRUE) {
-    if (is_object($uid)) $uid = $uid->uid;
+    if (is_object($uid)) {
+      $uid = $uid->uid;
+    }
     
     $class = get_called_class();
     
-    if ($class == get_class()) return FALSE;
+    if ($class == get_class()) {
+      return FALSE;
+    }
     
     $api_url = variable_get('soundcloud_api_url', 'http://api.soundcloud.com');
     $request = "$api_url/$request";
@@ -65,23 +77,31 @@ abstract class SoundCloudData {
     // JSON Implementation
     $json_response = drupal_http_request($request, array('Content-Type' => 'application/json'));
     $json = json_decode($json_response->data);
-    if (isset($json->error)) return FALSE;
+    if (isset($json->error)) {
+      return FALSE;
+    }
     
-    if (!is_array($json)) $json = array($json);
+    if (!is_array($json)) {
+      $json = array($json);
+    }
     
     //_p($json, "JSON | $class");
     foreach ($json as $data) {
       $requested_items[] = call_user_func(array($class, 'newFromObj'), $data, $uid, $import);
     }
 
-    if (isset($requested_items)) return $requested_items;
-    else return FALSE;
+    if (isset($requested_items)) {
+      return $requested_items;
+    }
+    else {
+      return FALSE;
+    }
   }
   
   /**
    * Required Methods
    */
-  abstract public static function newFromObj($obj, $uid, $import = TRUE);
+  //abstract public static function newFromObj($obj, $uid, $import = TRUE);
   abstract protected function save();
 }
 
@@ -103,17 +123,21 @@ class SoundCloudUser extends SoundCloudData {
   }
   
   public static function newFromObj($obj, $uid, $import = TRUE) {
-    return parent::_newFromObj(get_class(), $obj, $uid, $import);
+    return parent::newFromObj(get_class(), $obj, $uid, $import);
   }
   
   /**
    * Getters
    */  
   public static function getUser($uid) {
-    if (is_object($uid)) $uid = $uid->uid;
+    if (is_object($uid)) {
+      $uid = $uid->uid;
+    }
     
     $sc_user = db_fetch_object(db_query('SELECT * FROM {dsc_user} WHERE uid = %d', $uid));
-    if (!$sc_user) return NULL;
+    if (!$sc_user) {
+      return NULL;
+    }
     
     return SoundCloudUser::newFromObj($sc_user, $uid, FALSE);
   }
@@ -155,7 +179,7 @@ class SoundCloudUser extends SoundCloudData {
 
 
 class SoundCloudTrack extends SoundCloudData {
-  private static $dsc_fields = array(
+  protected static $dsc_fields = array(
     'tid' => 'id',
     'sc_user_id' => 'user_id',
   );
@@ -169,7 +193,7 @@ class SoundCloudTrack extends SoundCloudData {
   }
   
   public static function newFromObj($obj, $uid, $import = TRUE) {
-    return parent::_newFromObj(get_class(), $obj, $uid, $import);
+    return parent::newFromObj(get_class(), $obj, $uid, $import);
   }
   
   public static function getTrack($tid) {
@@ -179,23 +203,33 @@ class SoundCloudTrack extends SoundCloudData {
     return SoundCloudTrack::newFromObj($obj, $uid, FALSE);
   }
   
-  private function _flush() {
-    if (!db_query('DELETE FROM {dsc_tracks} WHERE tid=%d', $this->tid)) return FALSE;
-    else return TRUE;
+  protected function flushTrack() {
+    if (!db_query('DELETE FROM {dsc_tracks} WHERE tid=%d', $this->tid)) {
+      return FALSE;
+    }
+    else {
+      return TRUE;
+    }
   }
   
   public static function flush($tracks) {
     $error = FALSE;
     foreach ($tracks as $track) {
-      if (is_numeric($track)) $track = SoundCloudTrack::getTrack($track);
-      elseif (!is_object($track)) $error = TRUE;
+      if (is_numeric($track)) {
+        $track = SoundCloudTrack::getTrack($track);
+      }
+      elseif (!is_object($track)) {
+        $error = TRUE;
+      }
       
-      if (!$track->_flush()) {
+      if (!$track->flushTrack()) {
         $error = TRUE;
       }
     }
     
-    if ($error) drupal_set_message(t("There was an error while flushing tracks."), 'error');
+    if ($error) {
+      drupal_set_message(t("There was an error while flushing tracks."), 'error');
+    }
   }
   
   public function toggleVisibility() {
@@ -223,42 +257,54 @@ class SoundCloudTrack extends SoundCloudData {
  ********************************/
 if (!function_exists('get_called_class')) {
   function get_called_class($bt = FALSE, $l = 1) {
-    if (!$bt) $bt = debug_backtrace();
-    if (!isset($bt[$l])) throw new Exception("Cannot find called class -> stack level too deep.");
+    if (!$bt) {
+      $bt = debug_backtrace();
+    }
+    if (!isset($bt[$l])) {
+      throw new Exception("Cannot find called class -> stack level too deep.");
+    }
     if (!isset($bt[$l]['type'])) {
       throw new Exception('type not set');
     }
-    else switch ($bt[$l]['type']) {
-      case '::':
-        $lines = file($bt[$l]['file']);
-        $i = 0;
-        $callerLine = '';
-        do {
-          $i++;
-          $callerLine = $lines[$bt[$l]['line']-$i] . $callerLine;
-        } while (stripos($callerLine, $bt[$l]['function']) === FALSE);
-          preg_match('/([a-zA-Z0-9\_]+)::' . $bt[$l]['function'] . '/', $callerLine, $matches);
-        if (!isset($matches[1])) {
-          // must be an edge case.
-          throw new Exception("Could not find caller class: originating method call is obscured.");
-        }
-        switch ($matches[1]) {
-          case 'self':
-          case 'parent':
-            return get_called_class($bt, $l+1);
-          default:
-            return $matches[1];
-        }
-        // won't get here.
-      case '->': switch ($bt[$l]['function']) {
-        case '__get':
-          // edge case -> get class of calling object
-          if (!is_object($bt[$l]['object'])) throw new Exception ("Edge case fail. __get called on non object.");
-          return get_class($bt[$l]['object']);
-        default: return $bt[$l]['class'];
+    else {
+      switch ($bt[$l]['type']) {
+        case '::':
+          $lines = file($bt[$l]['file']);
+          $i = 0;
+          $callerLine = '';
+          do {
+            $i++;
+            $callerLine = $lines[$bt[$l]['line']-$i] . $callerLine;
+          } while (stripos($callerLine, $bt[$l]['function']) === FALSE);
+            preg_match('/([a-zA-Z0-9\_]+)::' . $bt[$l]['function'] . '/', $callerLine, $matches);
+          if (!isset($matches[1])) {
+            // must be an edge case.
+            throw new Exception("Could not find caller class: originating method call is obscured.");
+          }
+          switch ($matches[1]) {
+            case 'self':
+            case 'parent':
+              return get_called_class($bt, $l+1);
+            default:
+              return $matches[1];
+          }
+          // won't get here.
+        case '->':
+          switch ($bt[$l]['function']) {
+            case '__get':
+              // edge case -> get class of calling object
+              if (!is_object($bt[$l]['object'])) {
+                throw new Exception ("Edge case fail. __get called on non object.");
+              }
+              return get_class($bt[$l]['object']);
+            default: return $bt[$l]['class'];
+          }
+          break;
+  
+        default:
+          throw new Exception("Unknown backtrace method type");
+          break;
       }
-
-      default: throw new Exception("Unknown backtrace method type");
     }
   }
 }

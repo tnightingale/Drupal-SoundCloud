@@ -8,17 +8,16 @@
 /**
  * User account's Music tab.
  */
-function user_music($account) {
-  drupal_set_title(check_plain($account->name) . "'s Music");
+function dsc_user_music($account) {
+  drupal_set_title(t("!user's Music", array('!user' => check_plain($account->name))));
   
   $scuser = SoundCloudUser::getUser($account->uid);
   if ($scuser) {
     $tracks = $scuser->getTracks();
-    return theme('list_tracks', $tracks, TRUE);
+    return theme('dsc_list_tracks', $tracks, TRUE);
   }
   else {
-    $link = l(t('here'), "user/{$account->uid}/edit/music");
-    drupal_set_message(t("You need to set a SoundCloud account. You can do that !here", array('!here' => $link)), 'error');
+    drupal_set_message(t("You need to set a SoundCloud account. You can do that <a href=\"@user_music\">here</a>", array('@user_music' => url("user/{$account->uid}/edit/music"))), 'error');
     return t('No Music.');
   }
   

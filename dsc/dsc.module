@@ -59,16 +59,11 @@ function dsc_views_api() {
   return array('api' => 2);
 }
 
-/**
- * Always returns TRUE.
- */
-function _dsc_always_true() {
-  return TRUE;
-}
-
-function theme_list_tracks($tracks, $load_player) {
+function theme_dsc_list_tracks($tracks, $load_player) {
   if (!empty($tracks)) {
-    if (module_exists('dsc_player') && $load_player) dsc_player_load_player();
+    if (module_exists('dsc_player') && $load_player) {
+      dsc_player_load_player();
+    }
     
     foreach ($tracks as $track) {
       $permalinks[] = array(
@@ -99,6 +94,6 @@ function theme_views_view_dsc_player($view, $options, $rows, $title) {
     $tracks[] = $track;
   }
   
-  $output = theme('list_tracks', $tracks, FALSE);
+  $output = theme('dsc_list_tracks', $tracks, FALSE);
   return $output;
 }
