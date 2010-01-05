@@ -294,7 +294,7 @@ if (!function_exists('get_called_class')) {
             case '__get':
               // edge case -> get class of calling object
               if (!is_object($bt[$l]['object'])) {
-                throw new Exception ("Edge case fail. __get called on non object.");
+                throw new Exception("Edge case fail. __get called on non object.");
               }
               return get_class($bt[$l]['object']);
             default: return $bt[$l]['class'];
